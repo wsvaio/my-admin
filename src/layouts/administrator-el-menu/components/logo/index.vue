@@ -3,7 +3,7 @@ const title = import.meta.env.VITE_DOCUMENT_TITLE;
 </script>
 
 <template>
-  <div :class="['logo']">
+  <div :class="['logo', 'hover']">
     <img w="32px" h="32px" object="cover" src="@/assets/vue.svg" />
     <h3 m="0 l-12px">{{ title }}</h3>
   </div>
@@ -13,10 +13,9 @@ const title = import.meta.env.VITE_DOCUMENT_TITLE;
 .logo {
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding: 4px;
   height: 48px;
   white-space: nowrap;
   flex: none;
-  overflow: hidden;
 }
 </style>

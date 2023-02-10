@@ -20,7 +20,7 @@ export default (app: App) => {
     html.classList.add(main.theme);
   });
   watchEffect(() => {
-    html.classList.remove("left", "top", "full", "mobile");
+    html.classList.remove("left", "top", "full", "mobile", "left-mix", "top-mix");
     html.classList.add(main.layout);
   });
 };

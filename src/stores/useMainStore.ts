@@ -1,13 +1,17 @@
 import { defineStore } from "pinia";
-import { RouteLocationNormalized } from "vue-router";
+import { RouteLocationNormalized, RouteRecordRaw } from "vue-router";
 const storageName = `${import.meta.env.VITE_PROJECT_NAME}_main`;
-type Layout = "left" | "top" | "full" | "mobile";
+type Layout = "left" | "top" | "full" | "mobile" | "left-mix" | "top-mix";
 export default defineStore("main", {
   state: () => ({
     theme: "light" as "light" | "dark",
     layout: "left" as Layout,
     layoutOld: "left" as Layout,
     collapse: false,
+    showAside: false,
+    leftMixActiveRoute: null as RouteRecordRaw | null,
+    showLeftMix: false,
+    fixedLeftMix: false,
     // 要刷新时调用refresh++，要刷新的页面使用watch监听该属性，触发对应的刷新逻辑
     refresh: 0,
     cssVars: {

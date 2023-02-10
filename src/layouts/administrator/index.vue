@@ -1,8 +1,14 @@
 <script setup lang="ts">
-import MenuLeft from "./components/menu-left/index.vue";
+import "./styles/menu.less";
+import "./styles/layout.less";
 
+import MenuLeft from "./components/menu-left/index.vue";
+import MenuLeftMix from "./components/menu-left-mix/index.vue";
+import MenuLeftMixTrigger from "./components/menu-left-mix-trigger/index.vue";
 import MenuTop from "./components/menu-top/index.vue";
-import fold from "./components/fold/index.vue";
+
+import CollapseBottom from "./components/collapse-bottom/index.vue";
+import CollapseTop from "./components/collapse-top/index.vue";
 import BreadCrumb from "./components/bread-crumb/index.vue";
 
 import search from "./components/search/index.vue";
@@ -19,147 +25,126 @@ import TabFullscreen from "./components/tab-fullscreen/index.vue";
 import LogoLeft from "./components/logo-left/index.vue";
 import LogoTop from "./components/logo-top/index.vue";
 
-let { layoutHas, collapse } = $(useMainStore());
-const windowEvent = useEvent(window);
-windowEvent.on(["click"], () => {
-  if (!layoutHas("mobile")) return;
-  collapse = true;
-});
+const main = useMainStore();
 </script>
 
-<template>
-  <el-container class="administrator">
-    <el-aside
-      w="!auto"
-      v-if="layoutHas('left', 'mobile')"
-      :class="[collapse && 'collapse']"
-      @click.stop=""
-    >
-      <logo-left />
-      <menu-left v-if="layoutHas('left', 'mobile')" />
-    </el-aside>
-    <el-container :class="[collapse && 'collapse', 'content']">
-      <el-header v-if="layoutHas('top', 'left', 'mobile')">
-        <logo-top v-if="layoutHas('top', 'mobile')" />
-        <fold v-if="layoutHas('left', 'mobile')" />
-        <bread-crumb v-if="layoutHas('left')" />
-        <menu-top v-if="layoutHas('top')" />
-        <search />
-        <bell />
-        <full-screen />
-        <language />
-        <user />
-        <setting />
-      </el-header>
-      <nav class="tab">
-        <tabs />
-        <tab-refresh />
-        <tab-dropdown />
-        <tab-fullscreen />
-      </nav>
-      <el-main>
-        <router-view />
-      </el-main>
-      <!-- <el-footer></el-footer> -->
-    </el-container>
-  </el-container>
+<template tag="div" class="administrator">
+  <aside
+    @mousemove.stop=""
+    :class="[main.collapse && 'collapse', !main.showAside && 'hide']"
+    v-if="main.layoutHas('left', 'mobile', 'top-mix', 'left-mix')"
+    @click.stop=""
+  >
+    <logo-left />
+    <menu-left-mix-trigger v-if="main.layoutHas('left-mix')" />
+    <menu-left v-else />
+    <collapse-bottom />
+  </aside>
+  <menu-left-mix @mousemove.stop="" @click.stop="" v-if="main.layoutHas('left-mix')" />
+  <section flex="~ col 1" :class="main.collapse && 'collapse'">
+    <header v-if="main.layoutHas('left', 'left-mix', 'top', 'top-mix', 'mobile')">
+      <logo-top
+        :class="[!main.showAside && 'hide']"
+        v-if="main.layoutHas('top', 'mobile', 'top-mix')"
+      />
+      <collapse-top v-if="main.layoutHas('left', 'mobile', 'left-mix')" />
+      <bread-crumb v-if="main.layoutHas('left', 'left-mix')" />
+      <menu-top v-if="main.layoutHas('top', 'top-mix')" />
+      <search />
+      <bell />
+      <full-screen />
+      <language />
+      <user />
+      <setting />
+    </header>
+    <nav>
+      <tabs />
+      <tab-refresh />
+      <tab-dropdown />
+      <tab-fullscreen />
+    </nav>
+    <main flex="1"></main>
+    <!-- <footer></footer> -->
+  </section>
 </template>
-
 <style lang="less">
 html:not(.dark) .administrator {
-  .el-aside {
+  aside {
+    background-color: var(--aside-bg-color, #001529);
+  }
+
+  .menu-left-mix {
     background-color: var(--aside-bg-color, #001529);
   }
 }
 </style>
-<style lang="less">
-html.mobile .administrator {
-  .el-aside {
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    z-index: 10;
-    transition: transform 0.3s;
-
-    &.collapse {
-      transform: translateX(-100%);
-    }
-  }
-
-  .el-container.content {
-    background: var(--bg-color);
-    transition: filter 0.3s;
-    // border-left: solid 1px var(--el-menu-border-color);
-
-    &:not(.collapse) {
-      filter: brightness(50%);
-    }
-  }
-}
-</style>
-<style lang="less">
+<style lang="less" scoped>
 .administrator {
+  width: 100vw;
   height: 100vh;
-  // overflow: hidden;
-  .el-aside {
-    // &::-webkit-scrollbar {
-    //   display: none;
-    // }
-    // overflow: hidden;
-    position: relative;
+  display: flex;
+
+  aside {
+    background-color: var(--aside-bg-color, var(--bg-color));
+    overflow: auto;
+
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+  }
+
+  .menu-left-mix {
     background-color: var(--aside-bg-color, var(--bg-color));
   }
 
-  .el-container.content {
-    flex-direction: column;
-  }
-
-  .el-header {
-    display: flex;
-    height: 48px;
-    border-bottom: solid 1px var(--el-menu-border-color);
-    padding: 0;
-    background-color: var(--header-bg-color);
-
-    .hover {
-      transition: background-color 0.3s;
-      height: 100%;
+  section {
+    header {
       display: flex;
-      align-items: center;
-      padding: 10px;
+      height: 48px;
+      border-bottom: solid 1px var(--border-color);
+      padding: 0;
+      background-color: var(--header-bg-color, var(--bg-color));
 
-      &:hover {
-        background-color: rgb(var(--theme-color-invert) / 8%);
+      :deep(.hover) {
+        transition: background-color 0.3s;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        padding: 10px;
+
+        &:hover {
+          background-color: rgb(var(--theme-color-invert) / 8%);
+          cursor: pointer;
+        }
+      }
+    }
+
+    nav {
+      padding: 2px 0px 1px;
+      border-bottom: solid 1px var(--border-color);
+      display: flex;
+      background-color: var(--bg-color);
+
+      :deep(.setting) {
+        border-left: solid 1px var(--border-color);
+        border-bottom: solid 1px var(--border-color);
+        width: 36px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         cursor: pointer;
+        color: rgb(var(--theme-color-invert) / 50%);
+        transition: color 0.3s;
+
+        &:hover {
+          color: rgb(var(--theme-color-invert) / 100%);
+        }
       }
     }
-  }
 
-  nav.tab {
-    padding: 2px 0px 1px;
-    border-bottom: solid 1px var(--el-menu-border-color);
-    display: flex;
-
-    .setting {
-      border-left: solid 1px var(--el-menu-border-color);
-      border-bottom: solid 1px var(--el-menu-border-color);
-      width: 36px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      color: rgb(var(--theme-color-invert) / 50%);
-      transition: color 0.3s;
-
-      &:hover {
-        color: rgb(var(--theme-color-invert) / 100%);
-      }
+    main {
+      background: var(--main-bg-color);
     }
-  }
-
-  .el-main {
-    background: var(--main-bg-color);
   }
 }
 </style>

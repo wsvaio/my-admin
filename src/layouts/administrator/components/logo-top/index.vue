@@ -3,13 +3,7 @@ import logo from "../logo/index.vue";
 </script>
 
 <template>
-  <logo />
+  <logo :class="['logo-top', 'hover']" />
 </template>
 
-<style lang="less" scoped>
-.mobile .logo {
-  :deep(h3) {
-    display: none;
-  }
-}
-</style>
+<style lang="less" scoped></style>

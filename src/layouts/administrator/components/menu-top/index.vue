@@ -1,28 +1,44 @@
 <script setup lang="ts">
+import navPopup from "../nav-popup/index.vue";
 import { administratorChildren } from "@/routes";
-import MenuItem from "../menu-item/index.vue";
-const route = useRoute();
-const defaultActive = computed(() => String(route.name || route.meta.title || route.path));
+import useCount from "./useCount";
+import IEllipsis from "~icons/uit/ellipsis-h";
+const { layout } = $(useMainStore());
+const menuTopRef = $ref<HTMLDivElement>();
+const { count } = $(useCount($$(menuTopRef)));
+const routes = computed(() => {
+  const l =
+    layout === "top-mix"
+      ? administratorChildren.map((item) => ({
+          ...item,
+          children: [],
+          children_backup: item.children,
+        }))
+      : [...administratorChildren];
+  if (l.length > count) {
+    const children = l.slice(count);
+    l.length = count;
+    l.push({
+      path: "",
+      name: "",
+      meta: { title: "", icon: IEllipsis },
+      children,
+    });
+  }
+  return l;
+});
 </script>
 
 <template>
-  <el-menu
-    mode="horizontal"
-    class="menu-top"
-    flex="1"
-    un:border="!none"
-    router
-    :default-active="defaultActive"
-  >
-    <template v-for="item in administratorChildren">
-      <menu-item poper-class="menu-top" :routes="[item]" />
-    </template>
-  </el-menu>
+  <div class="menu-top" ref="menuTopRef"
+    ><nav-popup :routes="routes" :level="1" layout="horizontal"
+  /></div>
 </template>
 
-<style lang="less" scoped>
+<style scoped lang="less">
 .menu-top {
-  --el-bg-color-overlay: transparent;
-  background-color: var(--header-bg-color);
+  width: 100%;
+  display: flex;
+  // justify-content: center;
 }
 </style>

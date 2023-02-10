@@ -52,9 +52,9 @@ const handleMouseWheel = (ev) => {
   display: flex;
   flex: 1;
   padding: 0 0 0 6px;
-  border-bottom: solid 1px var(--border-color);
+  border-bottom: solid 1px var(--el-menu-border-color);
   overflow: auto;
-  width: 10vw;
+
   scrollbar-width: none;
 
   &::-webkit-scrollbar {
