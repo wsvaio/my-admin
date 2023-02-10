@@ -63,7 +63,13 @@ const main = useMainStore();
       <tab-dropdown />
       <tab-fullscreen />
     </nav>
-    <main flex="1"></main>
+    <main flex="1">
+      <router-view #="{ Component }">
+        <transition mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
+    </main>
     <!-- <footer></footer> -->
   </section>
 </template>
@@ -144,7 +150,25 @@ html:not(.dark) .administrator {
 
     main {
       background: var(--main-bg-color);
+      overflow-x: hidden;
     }
   }
+}
+</style>
+
+<style lang="less" scoped>
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+  transform: translateX(10%);
+}
+
+.v-enter-from {
+  transform: translateX(-10%);
+}
+
+.v-leave-active,
+.v-enter-active {
+  transition: all 0.2s ease;
 }
 </style>

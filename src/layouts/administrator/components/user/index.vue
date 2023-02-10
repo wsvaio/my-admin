@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import ilock from "~icons/material-symbols/lock-outline";
 import ishutdown from "~icons/icons8/shutdown";
+const main = useMainStore();
+const router = useRouter();
 const handleCommand = (item) => {
   if (item === "lock") {
   } else if (item === "logout") {
+    router.push({ name: "login" });
   }
 };
 </script>
@@ -12,7 +15,7 @@ const handleCommand = (item) => {
   <el-dropdown class="hover" @command="handleCommand">
     <div flex="~" items="center">
       <img src="@/assets/logo.svg" w="24px" h="24px" object="cover" />
-      <span m="l-8px">Vben Admin</span>
+      <span m="l-8px" v-if="main.layout != 'mobile'">Vben Admin</span>
     </div>
     <template #dropdown>
       <el-dropdown-menu>

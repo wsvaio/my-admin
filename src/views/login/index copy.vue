@@ -2,10 +2,10 @@
 import { sleep } from "@wsvaio/utils";
 import { useRequest } from "vue-request";
 
-const main = useMainStore();
-const { t } = useI18n();
+const { locale, availableLocales, t } = useI18n();
 const payload = reactive<Record<any, any>>({});
 const auth = useAuthStore();
+const main = useMainStore();
 const router = useRouter();
 const { loading, runAsync: submit } = $(
   useRequest(
@@ -22,31 +22,37 @@ const { loading, runAsync: submit } = $(
 </script>
 
 <template tag="div" class="login">
-  <article>
-    <header
-      v-enter="{ translate: '-100px, 0', delay: '0.1s' }"
-      grid="col-span-full"
-      flex="~"
-      p="t-100px"
-      text="white"
-      font="leading-[1]"
-      class="self-start"
-    >
-      <img src="@/assets/zck_logo.png" w="95px" h="77px" object="cover" />
-      <section
-        flex="~ col"
-        justify="center"
-        m="l-24px"
-        @click="main.theme = main.theme == 'light' ? 'dark' : 'light'"
-      >
-        <h1 m="0">智充客充电桩一体化管理平台</h1>
-        <h3 m="0 t-16px" class="opacity-50">UNIFIED AUTHENTICATION PLATFORM</h3>
-      </section>
-    </header>
+  <div class="content">
+    <section class="logo" v-enter="{ translate: '-100px, 0' }">
+      <div flex="~" items="center">
+        <img w="95px" h="77px" src="@/assets/zck_logo.png" />
 
-    <section class="left" v-enter="{ translate: '-100px, 0', delay: '0.2s' }">
-      <img transform="translate-x-[-10%]" w="full" src="@/assets/login/left-img.svg" />
-      <h1 m="0" text="white center" font="bold">智慧充电 · 美好生活</h1>
+        <div>
+          <h1 text="white" m="x-12px y-0">智充客充电桩一体化管理平台</h1>
+          <h3 text="white 18px" font="normal tracking-[1px]" m="x-12px y-0" class="opacity-50"
+            >UNIFIED AUTHENTICATION PLATFORM</h3
+          >
+        </div>
+      </div>
+    </section>
+
+    <section justify="self-end" v-enter="{ translate: '100px, 0' }">
+      <!-- <el-switch v-model="main.theme" :active-value="'dark'" :inactive-value="'light'" />
+      <el-select m="!l-12px" v-model="locale">
+        <el-option v-for="item in availableLocales" :label="item" :value="item" :key="item" />
+      </el-select> -->
+    </section>
+    <!-- <div></div> -->
+
+    <section class="left">
+      <img
+        v-enter="{ translate: '-100px, 0', delay: '0.1s' }"
+        w="[100%]"
+        src="@/assets/login/picture01.png"
+      />
+      <h1 v-enter="{ translate: '-100px, 0', delay: '0.2s' }" m="0" text="white center" font="bold"
+        >智慧充电 · 美好生活</h1
+      >
     </section>
 
     <el-form
@@ -54,9 +60,8 @@ const { loading, runAsync: submit } = $(
       :model="payload"
       size="large"
       :disabled="loading"
-      w="full
-      "
-      max="w-404px"
+      max="w-450px"
+      w="full"
       justify="self-end"
     >
       <h1 v-enter="{ translate: '100px, 0', delay: '0.1s' }">{{ t("login.form.title") }}</h1>
@@ -104,71 +109,68 @@ const { loading, runAsync: submit } = $(
       >
     </el-form>
 
-    <footer
-      v-enter="{ translate: '-100px, 0', delay: '0.3s' }"
-      grid="col-span-full"
-      class="self-end pb-24px"
-      text="white"
-    >
-      <a class="opacity-50">浙公网安备 33068102000744</a>
-      <a class="opacity-50" m="l-96px">浙ICP备 2021018529 号 -2</a>
+    <footer class="self-end text-right text-white opacity-50">
+      <a>浙公网安备33068102000744</a>
+      <a m="l-96px">浙ICP备2021018529号-2</a>
     </footer>
-  </article>
+  </div>
 </template>
 
 <style lang="less" scoped>
-.dark .login {
-  background: var(--bg-color) !important;
-}
-
 .login {
-  // background-color: rgb(var(--background-color-secondary));
-  // padding: 0 48px;
-  --login-max-width: 1440px;
-  background: url("@/assets/login/bg.svg") right 38.2vw center / cover no-repeat;
-  // linear-gradient(
-  //   270deg,
-  //   transparent 0%,
-  //   transparent calc(38.2vw + 200px),
-  //   #1e4dac calc(38.2vw + 200px),
-  //   #1e4dac
-  // );
-  // background-color: #1e4dac;
-  overflow-x: hidden;
+  background: url("@/assets/login/bg-left.svg") right 45vw center / cover no-repeat;
+  background-color: rgb(var(--background-color-secondary));
+  padding: 0 48px;
 
-  & > article {
-    max-width: var(--login-max-width);
+  & > div.content {
     margin: 0 auto;
-    height: 100vh;
-    padding: 0 24px;
+    min-height: 100vh;
+    max-width: var(--login-max-width, 1440px);
+    padding: 24px 0;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr max-content 1fr;
-    gap: 24px;
-    justify-content: space-between;
-    align-content: space-between;
-    // overflow-x: hidden;
-
-    // justify-items: center;
-    align-items: center;
+    justify-content: center;
+    gap: 0 48px;
   }
 }
 </style>
+
 <style lang="less" scoped>
+.dark .login {
+  background: url("@/assets/login/bg-left-dark.svg") right 48vw center / cover no-repeat;
+  background-color: rgb(41, 49, 70);
+}
+</style>
+
+<style lang="less">
+.xl {
+  --login-max-width: 1024px;
+}
+
+.dark {
+  --login-form-bg: transparent;
+}
+
 .md .login {
-  background: url("@/assets/login/bg.svg") right 0vw center / cover no-repeat;
+  background: rgb(41, 49, 70) !important;
+
+  h1 {
+    font-size: 1.6em;
+  }
+
+  h2 {
+    font-size: 1.2em;
+  }
 
   .left {
     display: none;
   }
 
   .right {
-    @apply shadow-lg;
     grid-column: span 2;
-    max-width: 500px;
     justify-self: center;
-
-    background-color: var(--login-form-bg-color, var(--bg-color));
+    background-color: var(--login-form-bg, white);
     border-radius: 12px;
     padding: 32px;
     text-align: center;

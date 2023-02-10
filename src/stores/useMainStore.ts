@@ -2,9 +2,11 @@ import { defineStore } from "pinia";
 import { RouteLocationNormalized, RouteRecordRaw } from "vue-router";
 const storageName = `${import.meta.env.VITE_PROJECT_NAME}_main`;
 type Layout = "left" | "top" | "full" | "mobile" | "left-mix" | "top-mix";
+type Size = "xxl" | "xl" | "lg" | "md" | "sm" | "xs" | "xxs";
 export default defineStore("main", {
   state: () => ({
     theme: "light" as "light" | "dark",
+    size: "xxl" as Size,
     layout: "left" as Layout,
     layoutOld: "left" as Layout,
     collapse: false,
