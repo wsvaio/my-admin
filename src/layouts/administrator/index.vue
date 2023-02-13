@@ -151,6 +151,7 @@ html:not(.dark) .administrator {
     main {
       background: var(--main-bg-color);
       overflow-x: hidden;
+      padding: 16px;
     }
   }
 }

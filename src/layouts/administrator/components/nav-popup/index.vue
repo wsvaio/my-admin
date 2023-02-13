@@ -39,6 +39,7 @@ defineExpose(exposed);
         isRouteActive(item) && 'active',
         level == 1 && 'top-level',
       ]"
+      :title="item.meta?.title"
       @click="$router.push({ name: item.name, params: $route.params })"
       ><component :is="item?.meta?.icon" class="icon" />
       <div class="text">{{ item?.meta?.title }}</div></div
@@ -58,6 +59,7 @@ defineExpose(exposed);
         isRouteActive(item) && 'active',
         level == 1 && 'top-level',
       ]"
+      :title="item.meta?.title"
     >
       <template #popup>
         <self :level="level + 1" :routes="item.children!" :layout="layout" />

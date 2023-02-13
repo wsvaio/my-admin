@@ -35,6 +35,12 @@ export const administratorChildren = [
     meta: { title: "仪表盘", icon: Menu },
     component: () => import("@/views/dashboard/index.vue"),
   },
+  {
+    path: "bg-map-demo",
+    name: "bg-map-demo",
+    meta: { title: "背景图片底图demo", icon: Menu },
+    component: () => import("@/views/bg-map-demo/index.vue"),
+  },
 
   deepRoute("item", 3),
 ] as RouteRecordRaw[];

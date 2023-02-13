@@ -28,6 +28,7 @@ defineExpose(exposed);
       v-if="isMenuItem(item)"
       :style="{ '--level': level }"
       :key="item.name"
+      :title="item.meta?.title"
       :class="[
         'menu-nav-item',
         isRouteActive(item) && 'active',
@@ -54,6 +55,7 @@ defineExpose(exposed);
           exposed.close && level != 1 && 'close',
           level != 1 && 'sub',
         ]"
+        :title="item.meta?.title"
         @click="innerExposed.close = !innerExposed.close"
       >
         <component :is="item?.meta?.icon" class="icon" />

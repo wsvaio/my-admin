@@ -20,6 +20,7 @@ const handleMenuClick = (routeItem: RouteRecordRaw) => {
     <div
       v-for="item in administratorChildren"
       :key="item.name"
+      :title="item.meta?.title"
       :class="['menu-nav-item', main.leftMixActiveRoute?.name == item.name && 'active']"
       @click="handleMenuClick(item)"
       ><component :is="item?.meta?.icon" class="icon" />
