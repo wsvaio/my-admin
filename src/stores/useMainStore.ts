@@ -8,7 +8,11 @@ export default defineStore("main", {
     theme: "light" as "light" | "dark",
     size: "xxl" as Size,
     layout: "left" as Layout,
-    layoutOld: "left" as Layout,
+    layoutCache: {
+      mobile: "left" as Layout,
+      full: "left" as Layout,
+    },
+    isFull: false,
     collapse: false,
     showAside: false,
     leftMixActiveRoute: null as RouteRecordRaw | null,
@@ -35,12 +39,13 @@ export default defineStore("main", {
     },
     toggleLayout(name: "full" | "mobile") {
       if (this.layout == name) {
-        this.layout = this.layoutOld;
+        this.layout = this.layoutCache[name];
       } else {
-        this.layoutOld = this.layout;
+        this.layoutCache[name] = this.layout;
         this.layout = name;
       }
     },
+
     layoutHas(...names: Layout[]) {
       return names.some((item) => item == this.layout);
     },
