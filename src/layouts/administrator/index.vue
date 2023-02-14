@@ -41,7 +41,7 @@ const main = useMainStore();
     <collapse-bottom />
   </aside>
   <menu-left-mix @mousemove.stop="" @click.stop="" v-if="main.layoutHas('left-mix')" />
-  <section flex="~ col 1" :class="main.collapse && 'collapse'">
+  <section :class="main.collapse && 'collapse'">
     <header v-if="main.layoutHas('left', 'left-mix', 'top', 'top-mix', 'mobile')">
       <logo-top
         :class="[!main.showAside && 'hide']"
@@ -63,10 +63,12 @@ const main = useMainStore();
       <tab-dropdown />
       <tab-fullscreen />
     </nav>
-    <main flex="1">
+    <main>
       <router-view #="{ Component }">
         <transition mode="out-in">
-          <component :is="Component" />
+          <keep-alive :include="main.nameList" :exclude="[...main.excluse]">
+            <component :is="Component" v-if="main.isRouteActive" :key="$route.fullPath" />
+          </keep-alive>
         </transition>
       </router-view>
     </main>
@@ -89,11 +91,12 @@ html:not(.dark) .administrator {
   width: 100vw;
   height: 100vh;
   display: flex;
+  // overflow: hidden;
 
   aside {
     background-color: var(--aside-bg-color, var(--bg-color));
     overflow: auto;
-
+    flex: none;
     display: flex;
     flex-direction: column;
     z-index: 10;
@@ -104,6 +107,11 @@ html:not(.dark) .administrator {
   }
 
   section {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0%;
+
     header {
       display: flex;
       height: 48px;
@@ -150,6 +158,7 @@ html:not(.dark) .administrator {
 
     main {
       background: var(--main-bg-color);
+      flex: 1 1 0%;
       overflow-x: hidden;
       padding: 16px;
     }

@@ -13,7 +13,7 @@ const handleCommand = (item) => {
         <el-dropdown-item v-for="item in availableLocales" :command="item">
           <span
             :style="{
-              color: item === locale ? 'rgb(var(--primary-color))' : 'inherit',
+              color: item === locale ? 'var(--primary-color)' : 'inherit',
             }"
             >{{ item }}</span
           >

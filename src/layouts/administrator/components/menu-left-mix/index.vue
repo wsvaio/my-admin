@@ -40,7 +40,7 @@ const title = import.meta.env.VITE_DOCUMENT_TITLE;
       p="r-12px"
       pos="sticky top-0"
     >
-      <span text="18px" m="r-auto">{{ title }}</span>
+      <span text="18px" m="r-auto" class="whitespace-nowrap">{{ title }}</span>
       <i-material-symbols:push-pin
         v-if="main.fixedLeftMix"
         @click="main.fixedLeftMix = !main.fixedLeftMix"

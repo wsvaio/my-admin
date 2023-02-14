@@ -32,10 +32,15 @@ const handleMenuClick = (routeItem: RouteRecordRaw) => {
 <style lang="less" scoped>
 .menu-left-mix-trigger {
   .menu-nav-item {
-    padding: 12px;
+    padding: 2px;
+    text-align: center;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    .text {
+      margin-left: 0px;
+    }
   }
 }
 </style>

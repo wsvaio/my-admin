@@ -3,6 +3,7 @@ import NavList from "../nav-list/index.vue";
 import NavPopup from "../nav-popup/index.vue";
 import { administratorChildren } from "@/routes";
 import { RouteRecordRaw } from "vue-router";
+import { getTopLevelRoute } from "../../utils";
 const main = useMainStore();
 const isShowNavList = computed(() => {
   if (main.layoutHas("left", "top-mix")) return !main.collapse;
@@ -13,7 +14,7 @@ const isShowNavList = computed(() => {
 const route = useRoute();
 const routes = computed((): RouteRecordRaw[] => {
   if (main.layoutHas("top-mix")) {
-    const activeRoute = administratorChildren.find((item) => item.name == route.name);
+    const activeRoute = getTopLevelRoute(route);
     if (!activeRoute) return routes.value;
     return activeRoute?.children || [];
   }

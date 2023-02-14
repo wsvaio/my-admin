@@ -69,7 +69,7 @@ scene.add(dirLightHelper);
 // camera.lookAt(mesh.position);
 
 const width = 800;
-const height = 500;
+const height = 800;
 
 const camera = new THREE.PerspectiveCamera(30, width / height, 1, 1000000);
 camera.position.set(200, 200, 200);
@@ -77,7 +77,7 @@ camera.lookAt(mesh.position);
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(width, height);
-
+renderer.setClearAlpha(0);
 renderer.render(scene, camera);
 
 // 设置相机控件轨道控制器OrbitControls

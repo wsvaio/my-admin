@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-let rotate = $ref(0);
+let refresh = $ref(0);
 const main = useMainStore();
 </script>
 
 <template>
   <div
     class="ml-auto setting"
-    :style="{ '--rotate': `${rotate}deg` }"
-    @click="(rotate += 360), main.refresh++"
+    :style="{ '--rotate': `${refresh * 360}deg` }"
+    @click="refresh++, main.refresh(String($route.name || ''))"
   >
     <i-prime:refresh class="icon" />
   </div>

@@ -9,11 +9,9 @@ export const router = createRouter({
 });
 
 router.beforeEach(() => Progress.start());
-router.beforeEach((to, from, next) => {
-  const { addKeepAlive } = $(useMainStore());
-  addKeepAlive(to);
-  next();
-});
+
+router.beforeEach((to) => useMainStore().addKeepAlive(to));
+
 router.afterEach(() => Progress.clear());
 
 export default (app: App) => app.use(router);

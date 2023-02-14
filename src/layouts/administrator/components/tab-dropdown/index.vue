@@ -6,7 +6,7 @@ const router = useRouter();
 const handleCommand = (command: string) => {
   const index = keepAlive.findIndex((item) => route.name == item.name);
   if (command == "reload") {
-    // emit("reload");
+    router.go(0);
   } else if (command == "close") {
     keepAlive.splice(index, 1);
     router.push([...keepAlive].reverse()[0]);

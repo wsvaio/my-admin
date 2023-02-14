@@ -12,17 +12,16 @@ export default defineStore("main", {
       mobile: "left" as Layout,
       full: "left" as Layout,
     },
-    isFull: false,
+    excluse: new Set<string>(),
     collapse: false,
     showAside: false,
     leftMixActiveRoute: null as RouteRecordRaw | null,
     showLeftMix: false,
     fixedLeftMix: false,
-    // 要刷新时调用refresh++，要刷新的页面使用watch监听该属性，触发对应的刷新逻辑
-    refresh: 0,
     cssVars: {
       "--primary-color": "",
     },
+    isRouteActive: true,
     // 要缓存的路由 因为要支持tab拖动 所以是个一列表
     keepAlive: [] as RouteLocationNormalized[],
   }),
@@ -49,6 +48,16 @@ export default defineStore("main", {
     layoutHas(...names: Layout[]) {
       return names.some((item) => item == this.layout);
     },
+
+    refresh(name: string) {
+      this.excluse.add(name);
+
+      this.isRouteActive = false;
+      nextTick(() => {
+        this.isRouteActive = true;
+        this.excluse.delete(name);
+      });
+    },
   },
   getters: {
     // 要缓存的路由名
@@ -58,6 +67,17 @@ export default defineStore("main", {
   },
 
   persist: {
+    paths: [
+      "theme",
+      "layout",
+      "layoutCache",
+      "collapse",
+      "showAside",
+      "showLeftMix",
+      "fixedLeftMix",
+      "cssVars",
+      "leftMixActiveRoute",
+    ],
     key: storageName,
   },
 });
